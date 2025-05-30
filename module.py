@@ -65,7 +65,7 @@ class Module(ABC):
             for root, dirs, filenames in os.walk(path):
                 for filename in filenames:
                     f = os.path.join(root, filename)
-                    if re.search(regex, f) and f not in excluded_files:
+                    if re.search(regex, f) and f not in excluded_files and "/.trrash/" not in f:
                         files.append(f)
         else:
             files = [path]
