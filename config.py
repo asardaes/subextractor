@@ -24,6 +24,14 @@ def parse_args():
         default=0,
         help="App scan interval in mins (default: 0), 0=disabled",
     )
+
+    parser.add_argument(
+        "--app-scan-timings",
+        nargs="+",
+        default=[],
+        help="Timing(s) in HH:MM (i.e. 13:33) to trigger the scans",
+    )
+
     parser.add_argument(
         "--app-enabled-extractor",
         action="store_true",
@@ -80,7 +88,7 @@ def parse_args():
         default=False,
         help="Overwrite existing subtitle file during extraction (default: False)",
     )
-    
+
     parser.add_argument(
         "--extractor-config-desired-formats",
         nargs="+",
@@ -141,6 +149,15 @@ APP_WATCH = config.app_watch
 APP_SCAN_INTERVAL = config.app_scan_interval
 APP_ENABLED_EXTRACTOR = config.app_enabled_extractor
 APP_ENABLED_POSTPROCESSOR = config.app_enabled_postprocessor
+
+
+APP_SCAN_TIMES: list[tuple[int, int]] = []
+
+for time in config.app_scan_times:
+    hour, mins = time.split(":")
+    APP_SCAN_TIMES.append((int(hour), int(mins)))
+
+
 EXTRACTOR_EXCLUDE_ENABLE = config.extractor_exclude_enable
 EXTRACTOR_EXCLUDE_FILE = config.extractor_exclude_file
 EXTRACTOR_EXCLUDE_APPEND = config.extractor_exclude_append
