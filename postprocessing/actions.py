@@ -3,7 +3,7 @@ from typing import Any
 
 from pysubs2 import SSAEvent, SSAFile, SSAStyle
 
-from .user_actions import *
+# user actions import at the bottom
 
 
 def info_select_current_info(ssafile: SSAFile, **kwargs) -> list[dict[str, Any]]:
@@ -197,3 +197,6 @@ def events_action_update_properties(
 def events_misc_remove_miscellaneous_events(ssafile: SSAFile, **kwargs) -> None:
     """Remove miscellaneous events - this doesn't operate on items."""
     ssafile.remove_miscellaneous_events()
+
+
+from .user_actions import *
