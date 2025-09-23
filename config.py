@@ -151,11 +151,11 @@ APP_ENABLED_EXTRACTOR = config.app_enabled_extractor
 APP_ENABLED_POSTPROCESSOR = config.app_enabled_postprocessor
 
 
-APP_SCAN_TIMES: list[tuple[int, int]] = []
+APP_SCAN_TIMINGS: list[tuple[int, int]] = []
 
-for time in config.app_scan_times:
+for time in config.app_scan_timings:
     hour, mins = time.split(":")
-    APP_SCAN_TIMES.append((int(hour), int(mins)))
+    APP_SCAN_TIMINGS.append((int(hour), int(mins)))
 
 
 EXTRACTOR_EXCLUDE_ENABLE = config.extractor_exclude_enable

@@ -112,7 +112,7 @@ def main(mainpath: str):
 
                 logger.info("Running next run on: " + str(next_run))
 
-            elif (now.hour, now.min) in config.APP_SCAN_TIMES:
+            elif (now.hour, now.min) in config.APP_SCAN_TIMINGS:
                 logger.info(f"Running scheduled scan on: {(now.hour, now.min)}")
                 run(mainpath)
 
