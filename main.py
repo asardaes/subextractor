@@ -94,7 +94,17 @@ def main(mainpath: str):
                 logger.info(
                     f"Processing queue item: {p} (remaining: {task_queue.qsize()})"
                 )
-                run(p)
+
+                # check if file is not being actively written to before processing it
+                size_1 = os.path.getsize(p)
+                time.sleep(3)
+                size_2 = os.path.getsize(p)
+                if size_1 == size_2:
+                    run(p)
+                else:
+                    task_queue.put(p)  # return it back to the queue
+                    time.sleep(3)
+
             elif config.APP_SCAN_INTERVAL > 0 and datetime.datetime.now() > next_run:
                 run(mainpath)
 
