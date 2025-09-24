@@ -86,6 +86,7 @@ def main(mainpath: str):
     )
 
     try:
+
         while True:
             now = datetime.datetime.now()
 
@@ -102,6 +103,7 @@ def main(mainpath: str):
                 if size_1 == size_2:
                     run(p)
                 else:
+                    logger.debug(f"File {p} is being modified! Waiting...")
                     task_queue.put(p)  # return it back to the queue
                     time.sleep(3)
 
@@ -112,8 +114,8 @@ def main(mainpath: str):
 
                 logger.info("Running next run on: " + str(next_run))
 
-            elif (now.hour, now.min) in config.APP_SCAN_TIMINGS:
-                logger.info(f"Running scheduled scan on: {(now.hour, now.min)}")
+            elif (now.hour, now.minute) in config.APP_SCAN_TIMINGS:
+                logger.info(f"Running scheduled scan on: {(now.hour, now.minute)}")
                 run(mainpath)
 
                 time.sleep(60)  # prevent it from scanning multiple times
