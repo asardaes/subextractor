@@ -40,6 +40,7 @@ Used for watching directory for changes
 - see [docker-compose.yml](./docker-compose.yml) for sample configuration
 
 ## Options
+
 <details>
   <summary>Show options</summary>
 
@@ -67,6 +68,8 @@ options:
   --app-watch           Enable app watch mode (default: false)
   --app-scan-interval APP_SCAN_INTERVAL
                         App scan interval in mins (default: 0), 0=disabled
+  --app-scan-timings APP_SCAN_TIMINGS [APP_SCAN_TIMINGS ...]
+                        Timing(s) in HH:MM (i.e. 13:33) to trigger the scans
   --app-enabled-extractor
                         Enable extractor (default: true)
   --no-app-enabled-extractor

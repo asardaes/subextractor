@@ -86,21 +86,40 @@ def main(mainpath: str):
     )
 
     try:
+
         while True:
+            now = datetime.datetime.now()
+
             if not task_queue.empty():
                 p = task_queue.get(block=False)
-                logger.info(
-                    f"Processing queue item: {p} (remaining: {task_queue.qsize()})"
-                )
-                run(p)
+
+                # check if file is not being actively written to before processing it
+                size_1 = os.path.getsize(p)
+                time.sleep(3)
+                size_2 = os.path.getsize(p)
+                if size_1 == size_2:
+                    logger.info(
+                        f"Processing queue item: {p} (remaining: {task_queue.qsize()})"
+                    )
+                    run(p)
+                else:
+                    logger.debug(f"File {p} is being modified! Waiting...")
+                    task_queue.put(p)  # return it back to the queue
+                    time.sleep(0.5)
+
             elif config.APP_SCAN_INTERVAL > 0 and datetime.datetime.now() > next_run:
                 run(mainpath)
 
-                next_run = datetime.datetime.now() + datetime.timedelta(
-                    minutes=config.APP_SCAN_INTERVAL
-                )
+                next_run = now + datetime.timedelta(minutes=config.APP_SCAN_INTERVAL)
 
                 logger.info("Running next run on: " + str(next_run))
+
+            elif (now.hour, now.minute) in config.APP_SCAN_TIMINGS:
+                logger.info(f"Running scheduled scan on: {(now.hour, now.minute)}")
+                run(mainpath)
+
+                time.sleep(60)  # prevent it from scanning multiple times
+
             else:
                 time.sleep(5)
     finally:

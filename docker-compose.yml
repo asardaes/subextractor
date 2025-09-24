@@ -14,7 +14,8 @@ services:
             
             --app-watch
             --app-scan-interval 15
-            
+            --app-scan-timings 03:15 12:30
+
             --app-enabled-extractor
             --app-enabled-postprocessor
 

@@ -2,13 +2,7 @@
 Constants for subtitle extraction.
 """
 
-SUPPORTED_FORMATS = [
-    "ass",
-    "srt",
-    "vtt",
-]
-
-FFMPEG_TEXT_FORMATS = [
+FFMPEG_TEXT_FORMATS = (
     "arib_caption",
     "ass",
     "eia_608",
@@ -30,7 +24,7 @@ FFMPEG_TEXT_FORMATS = [
     "ttml",
     "vplayer",
     "webvtt",
-]
+)
 
 FFMPEG_BITMAP_FORMATS = [
     "dvb_subtitle",
@@ -41,4 +35,20 @@ FFMPEG_BITMAP_FORMATS = [
 ]
 
 
-SUPPORTED_VIDEO_EXTENSION = ["mkv", "mp4", "webm", "ts", "ogg"]
+SUPPORTED_SUBTITLE_FORMATS = (
+    "ass",
+    "srt",
+    "vtt",
+)
+
+SUPPORTED_VIDEO_EXTENSION = (
+    "mkv",
+    "mp4",
+    "m4v",
+    "mov",
+    "ts",
+    "m2ts",
+    "webm",
+    "ogv",
+    "avi",
+)

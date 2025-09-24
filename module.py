@@ -8,6 +8,8 @@ from extract import (
     ExtractorConfig,
     MediaProber,
     TextSubtitleExtractor,
+    SUPPORTED_VIDEO_EXTENSION,
+    SUPPORTED_SUBTITLE_FORMATS,
 )
 from postprocessing import SubtitleFormatter
 
@@ -95,9 +97,11 @@ class Module(ABC):
 
 class ExtractionModule(Module):
 
-    def __init__(self, config: ExtractorConfig, extract_bitmap=False, **kwargs) -> None:
+    def __init__(
+        self, extract_conf: ExtractorConfig, extract_bitmap=False, **kwargs
+    ) -> None:
         super().__init__(**kwargs)
-        self.config = config
+        self.config = extract_conf
 
         self.extract_bitmap = extract_bitmap
         self.prober = MediaProber()
@@ -105,11 +109,11 @@ class ExtractionModule(Module):
     @classmethod
     def from_dict(cls, settings: dict):
 
-        config = ExtractorConfig(**settings.pop("config"))
+        config = ExtractorConfig(**settings["config"])
         return cls(config, **settings)
 
-    def get_file_extensions(self) -> tuple[str, str, str, str, str]:
-        return ("mkv", "mp4", "webm", "ts", "ogg")
+    def get_file_extensions(self):
+        return SUPPORTED_VIDEO_EXTENSION
 
     def process(self, filepaths: list[str]):
         extractor1 = TextSubtitleExtractor(self.config, self.prober)
@@ -149,8 +153,8 @@ class PostprocessorModule(Module):
     def from_dict(cls, settings: dict):
         return cls(settings["config"]["workflow_file"], **settings)
 
-    def get_file_extensions(self) -> tuple[str, str, str]:
-        return ("ass", "srt", "vtt")
+    def get_file_extensions(self):
+        return SUPPORTED_SUBTITLE_FORMATS
 
     def process(self, filepaths: list[str]):
         formatter = SubtitleFormatter(self.workflow_file)
