@@ -97,9 +97,11 @@ class Module(ABC):
 
 class ExtractionModule(Module):
 
-    def __init__(self, config: ExtractorConfig, extract_bitmap=False, **kwargs) -> None:
+    def __init__(
+        self, extract_conf: ExtractorConfig, extract_bitmap=False, **kwargs
+    ) -> None:
         super().__init__(**kwargs)
-        self.config = config
+        self.config = extract_conf
 
         self.extract_bitmap = extract_bitmap
         self.prober = MediaProber()
