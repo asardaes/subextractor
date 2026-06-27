@@ -23,7 +23,7 @@ class BaseExtractor(ABC):
         self.media_prober = media_probe
 
     @abstractmethod
-    def extract(self, video_path: str, streams: list[StreamInfo]) -> list[str]:
+    def extract(self, video_path: str) -> list[str]:
         """
         Extract subtitles from video file.
 
@@ -70,13 +70,13 @@ class BaseExtractor(ABC):
             return False
 
         # Check codec support
-        if supported_codecs and stream.codec_name not in supported_codecs:
-            logger.warning(
+        if stream.codec_name not in supported_codecs:
+            logger.debug(
                 f"Skipping unsupported codec '{stream.codec_name}' for stream {stream.index}"
             )
             return False
 
-        logger.debug(
+        logger.info(
             f"Will extract stream {stream.index} ({stream.language}, {stream.codec_name})"
         )
         return True
