@@ -30,7 +30,7 @@ class TextSubtitleExtractor(BaseExtractor):
         Returns:
             List of paths to extracted subtitle files
         """
-        logger.debug(f"Extracting text subtitles from {video_path}")
+        logger.info(f"Extracting text subtitles from: {video_path}")
 
         streams = self.media_prober.get_subtitle_streams(
             video_path, self.config.unknown_language_as
@@ -61,9 +61,7 @@ class TextSubtitleExtractor(BaseExtractor):
         if ffmpeg_args:
             try:
                 self._run_ffmpeg_extraction(video_path, ffmpeg_args)
-                logger.info(
-                    f"Extracted {len(output_paths)} text-based subtitle files from: {video_path}"
-                )
+                logger.info(f"Extracted {len(output_paths)} text-based subtitle files")
             except:
                 for p in output_path:
                     if os.path.exists(p) and os.path.getsize(p) == 0:
