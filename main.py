@@ -81,12 +81,11 @@ def main(mainpath: str):
         observer.schedule(event_handler, os.path.abspath(mainpath), recursive=True)
         observer.start()
 
-    next_run = datetime.datetime.now() + datetime.timedelta(
+    next_run = datetime.datetime.now() - datetime.timedelta(
         minutes=config.APP_SCAN_INTERVAL
     )
 
     try:
-
         while True:
             now = datetime.datetime.now()
 
@@ -107,7 +106,7 @@ def main(mainpath: str):
                     task_queue.put(p)  # return it back to the queue
                     time.sleep(0.5)
 
-            elif config.APP_SCAN_INTERVAL > 0 and datetime.datetime.now() > next_run:
+            elif config.APP_SCAN_INTERVAL > 0 and now > next_run:
                 run(mainpath)
 
                 next_run = now + datetime.timedelta(minutes=config.APP_SCAN_INTERVAL)
