@@ -2,17 +2,18 @@
 Text-based subtitle extractor using FFmpeg.
 """
 
+import itertools
 import logging
 import os
 
 from ..constants import FFMPEG_TEXT_FORMATS
 from ..exceptions import FFmpegError
 from ..path import SubtitlePath
-from ..prober import StreamInfo
-from .base import BaseExtractor
 from ..subprocess import SubprocessError
+from .base import BaseExtractor
 
 logger = logging.getLogger(__name__)
+_CODECS = list(itertools.chain.from_iterable(FFMPEG_TEXT_FORMATS.values()))
 
 
 class TextSubtitleExtractor(BaseExtractor):
@@ -29,14 +30,14 @@ class TextSubtitleExtractor(BaseExtractor):
         Returns:
             List of paths to extracted subtitle files
         """
-        logger.debug(f"Extracting text subtitles from {video_path}")
+        logger.info(f"Extracting text subtitles from: {video_path}")
 
         streams = self.media_prober.get_subtitle_streams(
             video_path, self.config.unknown_language_as
         )
 
         # Filter streams by supported codecs
-        text_streams = self.filter_streams_by_codec(streams, FFMPEG_TEXT_FORMATS)
+        text_streams = self.filter_streams_by_codec(streams, _CODECS)
 
         if not text_streams:
             logger.debug("No text-based subtitle streams found")
@@ -52,7 +53,7 @@ class TextSubtitleExtractor(BaseExtractor):
                 output_path = path_manager.generate_subtitle_path(stream, fmt)
 
                 if self.should_extract_stream(
-                    video_path, stream, output_path, FFMPEG_TEXT_FORMATS
+                    video_path, stream, output_path, FFMPEG_TEXT_FORMATS.get(fmt, [])
                 ):
                     ffmpeg_args.extend(["-map", f"0:{stream.index}", output_path])
                     output_paths.append(output_path)
@@ -62,7 +63,6 @@ class TextSubtitleExtractor(BaseExtractor):
                 self._run_ffmpeg_extraction(video_path, ffmpeg_args)
                 logger.info(f"Extracted {len(output_paths)} text-based subtitle files")
             except:
-
                 for p in output_path:
                     if os.path.exists(p) and os.path.getsize(p) == 0:
                         os.remove(p)

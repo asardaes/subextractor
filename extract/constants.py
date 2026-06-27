@@ -2,29 +2,13 @@
 Constants for subtitle extraction.
 """
 
-FFMPEG_TEXT_FORMATS = (
-    "arib_caption",
-    "ass",
-    "eia_608",
-    "hdmv_text_subtitle",
-    "jacosub",
-    "microdvd",
-    "mov_text",
-    "mpl2",
-    "pjs",
-    "realtext",
-    "sami",
-    "srt",
-    "ssa",
-    "stl",
-    "subrip",
-    "subviewer",
-    "subviewer1",
-    "text",
-    "ttml",
-    "vplayer",
-    "webvtt",
-)
+FFMPEG_TEXT_FORMATS = {
+    "srt": ["srt", "subrip", "mov_text"],
+    "ass": ["ass", "ssa"],
+    "vtt": ["webvtt"],
+    "ttml": ["ttml"],
+}
+
 
 FFMPEG_BITMAP_FORMATS = [
     "dvb_subtitle",
