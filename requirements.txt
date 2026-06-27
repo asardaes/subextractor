@@ -1,7 +1,7 @@
 babelfish==0.6.1
-cachetools==5.5.0
-pgsrip==0.1.11
-pysubs2==1.8.0
-PyYAML==6.0.2
-tqdm_loggable==0.2
+cachetools==7.1.4
+pgsrip==0.1.12
+pysubs2==1.8.1
+PyYAML==6.0.3
+tqdm_loggable==0.4.1
 watchdog==6.0.0
