@@ -4,12 +4,12 @@ import re
 from abc import ABC, abstractmethod
 
 from extract import (
+    SUPPORTED_SUBTITLE_FORMATS,
+    SUPPORTED_VIDEO_EXTENSION,
     BitmapSubtitleExtractor,
     ExtractorConfig,
     MediaProber,
     TextSubtitleExtractor,
-    SUPPORTED_VIDEO_EXTENSION,
-    SUPPORTED_SUBTITLE_FORMATS,
 )
 from postprocessing import SubtitleFormatter
 
@@ -71,7 +71,13 @@ class Module(ABC):
             for root, dirs, filenames in os.walk(path):
                 for filename in filenames:
                     f = os.path.join(root, filename)
-                    if re.search(regex, f) and f not in excluded_files and "/.trrash/" not in f and "/.permaseed/" not in f:
+                    if (
+                        re.search(regex, f)
+                        and f not in excluded_files
+                        and "/.trrash/" not in f
+                        and "/.permaseed/" not in f
+                        and "/.Extras/" not in f
+                    ):
                         files.append(f)
         else:
             files = [path]
@@ -79,6 +85,7 @@ class Module(ABC):
         logger.info(
             f"Found {len(files)} files to be processed, {len(excluded_files)} excluded"
         )
+        files.sort()
         return files
 
     @abstractmethod
@@ -96,7 +103,6 @@ class Module(ABC):
 
 
 class ExtractionModule(Module):
-
     def __init__(
         self, extract_conf: ExtractorConfig, extract_bitmap=False, **kwargs
     ) -> None:
@@ -139,7 +145,6 @@ class ExtractionModule(Module):
 
 
 class PostprocessorModule(Module):
-
     def __init__(
         self,
         workflow_file: str,
