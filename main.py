@@ -109,7 +109,9 @@ def main(mainpath: str):
             elif config.APP_SCAN_INTERVAL > 0 and now > next_run:
                 run(mainpath)
 
-                next_run = now + datetime.timedelta(minutes=config.APP_SCAN_INTERVAL)
+                next_run = datetime.datetime.now() + datetime.timedelta(
+                    minutes=config.APP_SCAN_INTERVAL
+                )
 
                 logger.info("Running next run on: " + str(next_run))
 
