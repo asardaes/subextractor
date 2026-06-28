@@ -126,20 +126,20 @@ class ExtractionModule(Module):
         extractor2 = BitmapSubtitleExtractor(self.config, self.prober)
 
         output_files = []
-        for path in filepaths:
-            try:
+        try:
+            for path in filepaths:
                 output_files += extractor1.extract(path)
-
                 if self.extract_bitmap:
                     output_files += extractor2.extract(path)
 
-            except Exception as e:
-                logger.critical(f"An error has occuerd while extracting: {e}")
+        except Exception as e:
+            logger.critical(f"An error has occuerd while extracting: {e}")
 
-        if self.should_add_excluded:
-            self.add_excluded_files(filepaths)
         else:
-            logger.debug("No adding excluded files")
+            if self.should_add_excluded:
+                self.add_excluded_files(filepaths)
+            else:
+                logger.debug("No adding excluded files")
 
         return output_files
 
